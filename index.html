@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Facebook Login Test</title>
+</head>
+<body>
+
+<h2>Facebook Login</h2>
+<button onclick="loginWithFacebook()">Login with Facebook</button>
+
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '4367062466854535', // 👉 ikada mi app ID pettandi
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v19.0' // latest SDK version
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function loginWithFacebook() {
+    FB.login(function(response) {
+      if (response.authResponse) {
+        console.log('Login success:', response);
+        FB.api('/me', {fields: 'name,email'}, function(userInfo) {
+          alert('Welcome, ' + userInfo.name + '\nEmail: ' + userInfo.email);
+        });
+      } else {
+        alert('User cancelled login or did not fully authorize.');
+      }
+    }, {scope: 'public_profile,email'});
+  }
+</script>
+
+</body>
+</html>
